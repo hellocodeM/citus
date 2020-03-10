@@ -18,6 +18,7 @@
 
 #include <float.h>
 #include <limits.h>
+#include <math.h>
 
 #include "distributed/citus_safe_lib.h"
 #include "lib/stringinfo.h"
