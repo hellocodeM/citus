@@ -673,6 +673,12 @@ ConfigGenericNameCompare(const void *a, const void *b)
 {
 	const struct config_generic *confa = *(struct config_generic *const *) a;
 	const struct config_generic *confb = *(struct config_generic *const *) b;
+
+	/*
+	 * guc_var_compare used a custom comparison function here to allow stable
+	 * ordering, but we do not need it here as we only perform a lookup, and do
+	 * not use this function to order the guc list.
+	 */
 	return pg_strcasecmp(confa->name, confb->name);
 }
 
