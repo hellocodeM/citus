@@ -505,8 +505,8 @@ GetDatabaseNameFromDbRoleSetting(HeapTuple tuple, TupleDesc DbRoleSettingDescrip
 
 
 /*
- * GetDatabaseNameFromDbRoleSetting performs a lookup, and finds the role name
- * associated with a Role Setting
+ * GetRoleNameFromDbRoleSetting performs a lookup, and finds the role name
+ * associated DbRoleSetting Tuple
  */
 static char *
 GetRoleNameFromDbRoleSetting(HeapTuple tuple, TupleDesc DbRoleSettingDescription)
