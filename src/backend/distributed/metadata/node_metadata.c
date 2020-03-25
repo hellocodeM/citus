@@ -403,7 +403,7 @@ PropagateRolesToNewNode(WorkerNode *newWorkerNode)
 
 	List *ddlCommands = NIL;
 	List *alterRoleCommands = GenerateAlterRoleIfExistsCommandAllRoles();
-	List *alterRoleSetCommands = GenerateAlterRoleSetIfExistsCommandAllRoles();
+	List *alterRoleSetCommands = GenerateAlterRoleSetIfExistsCommands();
 
 	ddlCommands = list_concat(ddlCommands, alterRoleCommands);
 	ddlCommands = list_concat(ddlCommands, alterRoleSetCommands);

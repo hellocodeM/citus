@@ -186,7 +186,7 @@ extern List * PreprocessRenameAttributeStmt(Node *stmt, const char *queryString)
 extern List * PostprocessAlterRoleStmt(Node *stmt, const char *queryString);
 extern List * PreprocessAlterRoleSetStmt(Node *stmt, const char *queryString);
 extern List * GenerateAlterRoleIfExistsCommandAllRoles(void);
-extern List * GenerateAlterRoleSetIfExistsCommandAllRoles(void);
+extern List * GenerateAlterRoleSetIfExistsCommands(void);
 
 
 /* schema.c - forward declarations */

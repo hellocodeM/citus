@@ -434,11 +434,11 @@ GenerateAlterRoleIfExistsCommandAllRoles()
 
 
 /*
- * GenerateAlterRoleSetIfExistsCommandAllRoles creates ALTER ROLE .. SET commands
+ * GenerateAlterRoleSetIfExistsCommands creates ALTER ROLE .. SET commands
  * that copies all session defaults for roles from the pg_db_role_setting table.
  */
 List *
-GenerateAlterRoleSetIfExistsCommandAllRoles()
+GenerateAlterRoleSetIfExistsCommands()
 {
 	Relation DbRoleSetting = heap_open(DbRoleSettingRelationId, AccessShareLock);
 	TupleDesc DbRoleSettingDescription = RelationGetDescr(DbRoleSetting);
