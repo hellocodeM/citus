@@ -224,7 +224,7 @@ typedef struct Task
 	 * query could possibly be locally executed. In that case deparsing+parsing
 	 * the query might not be necessary, so we do that lazily.
 	 *
-	 * queryForLocalExecution should only be set by using SetTaskQuery()
+	 * queryForLocalExecution should only be set by using SetTaskQueryIfShouldLazyDeparse()
 	 */
 	Query *queryForLocalExecution;
 

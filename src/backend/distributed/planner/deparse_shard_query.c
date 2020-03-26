@@ -183,7 +183,7 @@ UpdateTaskQueryString(Query *query, Oid distributedTableId, RangeTblEntry *value
 		task->anchorDistributedTableId = distributedTableId;
 	}
 
-	SetTaskQuery(task, query);
+	SetTaskQueryIfShouldLazyDeparse(task, query);
 
 	if (valuesRTE != NULL)
 	{
@@ -414,13 +414,13 @@ ShouldLazyDeparseQuery(Task *task)
 
 
 /*
- * SetTaskQuery attaches the query to the task so that it can be used during
+ * SetTaskQueryIfShouldLazyDeparse attaches the query to the task so that it can be used during
  * execution. If local execution can possibly take place it sets task->queryForLocalExecution.
  * If not it deparses the query and sets queryStringLazy, to avoid blowing the
  * size of the task unnecesarily.
  */
 void
-SetTaskQuery(Task *task, Query *query)
+SetTaskQueryIfShouldLazyDeparse(Task *task, Query *query)
 {
 	if (ShouldLazyDeparseQuery(task))
 	{
