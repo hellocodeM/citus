@@ -42,6 +42,7 @@ static void ConvertRteToSubqueryWithEmptyResult(RangeTblEntry *rte);
 static bool ShouldLazyDeparseQuery(Task *task);
 static char * DeparseTaskQuery(Task *task, Query *query);
 static bool IsEachPlacementQueryStringDifferent(Task* task);
+static char *TaskQueryStringForAllPlacements(Task *task);
 
 
 /*
@@ -503,6 +504,14 @@ DeparseTaskQuery(Task *task, Query *query)
 char *
 TaskQueryString(Task *task)
 {
+	return TaskQueryStringForAllPlacements(task);
+}	
+
+/*
+ * TaskQueryStringForAllPlacements returns the query string for the given task.
+ * In this case, each placement has the same query string.
+ */
+static char *TaskQueryStringForAllPlacements(Task *task) {
 	if (task->queryStringLazy != NULL)
 	{
 		return task->queryStringLazy;
@@ -523,6 +532,14 @@ TaskQueryString(Task *task)
 	task->queryStringLazy = DeparseTaskQuery(task, task->queryForLocalExecution);
 	MemoryContextSwitchTo(previousContext);
 	return task->queryStringLazy;
+}
+
+char * TaskQueryStringForPlacement(Task *task, int placementIndex) {
+	if (IsEachPlacementQueryStringDifferent(task)) {
+		Assert(list_length(task->perPlacementQueryStrings) > placementIndex);
+		return list_nth(task->perPlacementQueryStrings, placementIndex);
+	}
+	return TaskQueryStringForAllPlacements(task);
 }
 
 /*
