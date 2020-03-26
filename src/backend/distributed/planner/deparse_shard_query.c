@@ -41,8 +41,8 @@ static void UpdateTaskQueryString(Query *query, Oid distributedTableId,
 static void ConvertRteToSubqueryWithEmptyResult(RangeTblEntry *rte);
 static bool ShouldLazyDeparseQuery(Task *task);
 static char * DeparseTaskQuery(Task *task, Query *query);
-static bool IsEachPlacementQueryStringDifferent(Task* task);
-static char *TaskQueryStringForAllPlacements(Task *task);
+static bool IsEachPlacementQueryStringDifferent(Task *task);
+static char * TaskQueryStringForAllPlacements(Task *task);
 
 
 /*
@@ -117,7 +117,8 @@ RebuildQueryStrings(Job *workerJob)
 								task->queryForLocalExecution == NULL &&
 								task->queryStringLazy == NULL
 								? "(null)"
-								: ApplyLogRedaction(TaskQueryStringAllPlacements(task)))));
+								: ApplyLogRedaction(TaskQueryStringAllPlacements(
+														task)))));
 
 		UpdateTaskQueryString(query, relationId, valuesRTE, task);
 
@@ -428,7 +429,7 @@ SetTaskQueryIfShouldLazyDeparse(Task *task, Query *query)
 		task->queryStringLazy = NULL;
 		return;
 	}
-	SetTaskQueryString(task, DeparseTaskQuery(task,query));
+	SetTaskQueryString(task, DeparseTaskQuery(task, query));
 }
 
 
@@ -444,10 +445,13 @@ SetTaskQueryString(Task *task, char *queryString)
 	task->queryStringLazy = queryString;
 }
 
+
 /*
  * SetTaskPerPlacementQueryStrings set the perPlacementQueryString for the given task.
  */
-void SetTaskPerPlacementQueryStrings(Task *task, List* perPlacementQueryStringList) {
+void
+SetTaskPerPlacementQueryStrings(Task *task, List *perPlacementQueryStringList)
+{
 	Assert(perPlacementQueryStringList != NIL);
 	task->perPlacementQueryStrings = perPlacementQueryStringList;
 	SetTaskQueryString(task, NULL);
@@ -505,13 +509,16 @@ char *
 TaskQueryStringAllPlacements(Task *task)
 {
 	return TaskQueryStringForAllPlacements(task);
-}	
+}
+
 
 /*
  * TaskQueryStringForAllPlacements returns the query string for the given task.
  * In this case, each placement has the same query string.
  */
-static char *TaskQueryStringForAllPlacements(Task *task) {
+static char *
+TaskQueryStringForAllPlacements(Task *task)
+{
 	if (task->queryStringLazy != NULL)
 	{
 		return task->queryStringLazy;
@@ -529,23 +536,30 @@ static char *TaskQueryStringForAllPlacements(Task *task) {
 	 */
 	MemoryContext previousContext = MemoryContextSwitchTo(GetMemoryChunkContext(
 															  task->queryForLocalExecution));
-	task->queryStringLazy = DeparseTaskQuery(task, task->queryForLocalExecution);
+	SetTaskQueryString(task, DeparseTaskQuery(task, task->queryForLocalExecution));
 	MemoryContextSwitchTo(previousContext);
 	return task->queryStringLazy;
 }
 
-char * TaskQueryStringForPlacement(Task *task, int placementIndex) {
-	if (IsEachPlacementQueryStringDifferent(task)) {
+
+char *
+TaskQueryStringForPlacement(Task *task, int placementIndex)
+{
+	if (IsEachPlacementQueryStringDifferent(task))
+	{
 		Assert(list_length(task->perPlacementQueryStrings) > placementIndex);
 		return list_nth(task->perPlacementQueryStrings, placementIndex);
 	}
 	return TaskQueryStringForAllPlacements(task);
 }
 
+
 /*
  * IsEachPlacementQueryStringDifferent returns true if each placement
  * has a different query string.
  */
-static bool IsEachPlacementQueryStringDifferent(Task* task) {
+static bool
+IsEachPlacementQueryStringDifferent(Task *task)
+{
 	return list_length(task->perPlacementQueryStrings) > 0;
 }

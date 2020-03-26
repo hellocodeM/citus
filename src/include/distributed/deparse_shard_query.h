@@ -26,7 +26,8 @@ extern bool UpdateRelationToShardNames(Node *node, List *relationShardList);
 extern void SetTaskQueryIfShouldLazyDeparse(Task *task, Query *query);
 extern void SetTaskQueryString(Task *task, char *queryString);
 extern void SetTaskQueryStringList(Task *task, List *queryStringList);
-extern void SetTaskPerPlacementQueryStrings(Task *task, List* perPlacementQueryStringList);
+extern void SetTaskPerPlacementQueryStrings(Task *task,
+											List *perPlacementQueryStringList);
 extern char * TaskQueryStringAllPlacements(Task *task);
 extern char * TaskQueryStringForPlacement(Task *task, int placementIndex);
 extern bool UpdateRelationsToLocalShardTables(Node *node, List *relationShardList);

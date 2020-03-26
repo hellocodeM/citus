@@ -1605,7 +1605,9 @@ TrackerQueueTask(TaskTracker *taskTracker, Task *task)
 	HTAB *taskStateHash = taskTracker->taskStateHash;
 
 	/* wrap a task assignment query outside the original query */
-	StringInfo taskAssignmentQuery = TaskAssignmentQuery(task, TaskQueryStringAllPlacements(task));
+	StringInfo taskAssignmentQuery = TaskAssignmentQuery(task,
+														 TaskQueryStringAllPlacements(
+															 task));
 
 	TrackerTaskState *taskState = TaskStateHashEnter(taskStateHash, task->jobId,
 													 task->taskId);
@@ -2840,7 +2842,8 @@ TrackerHashCleanupJob(HTAB *taskTrackerHash, Task *jobCleanupTask)
 										 nodePort, (int) resultStatus),
 								  errhint("Manually clean job resources on node "
 										  "\"%s:%u\" by running \"%s\" ", nodeName,
-										  nodePort, TaskQueryStringAllPlacements(jobCleanupTask))));
+										  nodePort, TaskQueryStringAllPlacements(
+											  jobCleanupTask))));
 			}
 			else
 			{

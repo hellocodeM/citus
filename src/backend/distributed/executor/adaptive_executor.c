@@ -3196,7 +3196,9 @@ StartPlacementExecutionOnSession(TaskPlacementExecution *placementExecution,
 	List *placementAccessList = PlacementAccessListForTask(task, taskPlacement);
 	int querySent = 0;
 
-	char *queryString = TaskQueryStringForPlacement(task, placementExecution->placementExecutionIndex);
+	char *queryString = TaskQueryStringForPlacement(task,
+													placementExecution->
+													placementExecutionIndex);
 
 	if (execution->transactionProperties->useRemoteTransactionBlocks !=
 		TRANSACTION_BLOCKS_DISALLOWED)
