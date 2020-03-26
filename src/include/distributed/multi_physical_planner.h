@@ -230,11 +230,11 @@ typedef struct Task
 
 	/*
 	 * In almost all cases queryStringLazy should be read only indirectly by
-	 * using TaskQueryString(). This will populate the field if only the
+	 * using TaskQueryStringAllPlacements(). This will populate the field if only the
 	 * queryForLocalExecution field is not NULL.
 	 *
 	 * This field should only be set by using SetTaskQueryString() (or as a
-	 * side effect from TaskQueryString()). Otherwise it might not be in sync
+	 * side effect from TaskQueryStringAllPlacements()). Otherwise it might not be in sync
 	 * with queryForLocalExecution.
 	 */
 	char *queryStringLazy;

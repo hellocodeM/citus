@@ -117,7 +117,7 @@ RebuildQueryStrings(Job *workerJob)
 								task->queryForLocalExecution == NULL &&
 								task->queryStringLazy == NULL
 								? "(null)"
-								: ApplyLogRedaction(TaskQueryString(task)))));
+								: ApplyLogRedaction(TaskQueryStringAllPlacements(task)))));
 
 		UpdateTaskQueryString(query, relationId, valuesRTE, task);
 
@@ -128,7 +128,7 @@ RebuildQueryStrings(Job *workerJob)
 		task->parametersInQueryStringResolved = workerJob->parametersInJobQueryResolved;
 
 		ereport(DEBUG4, (errmsg("query after rebuilding:  %s",
-								ApplyLogRedaction(TaskQueryString(task)))));
+								ApplyLogRedaction(TaskQueryStringAllPlacements(task)))));
 	}
 }
 
@@ -495,14 +495,14 @@ DeparseTaskQuery(Task *task, Query *query)
 
 
 /*
- * TaskQueryString generates task->queryStringLazy if missing.
+ * TaskQueryStringAllPlacements generates task->queryStringLazy if missing.
  *
  * For performance reasons, the queryString is generated lazily. For example
  * for local queries it is usually not needed to generate it, so this way we
  * can skip the expensive deparsing+parsing.
  */
 char *
-TaskQueryString(Task *task)
+TaskQueryStringAllPlacements(Task *task)
 {
 	return TaskQueryStringForAllPlacements(task);
 }	
